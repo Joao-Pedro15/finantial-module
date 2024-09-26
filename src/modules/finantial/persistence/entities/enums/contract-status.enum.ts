@@ -1,0 +1,5 @@
+export enum ContractStatusEnum {
+  OUT_FOR_SIGNATURE = 'OUT_FOR_SIGNATURE',
+  SIGNED = 'SIGNED',
+  CANCELLED = 'CANCELELD'
+}
