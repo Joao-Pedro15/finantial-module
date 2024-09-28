@@ -1,7 +1,8 @@
-import { Column, Entity, ManyToOne } from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany } from "typeorm";
 import { ContractStatusEnum } from "./enums/contract-status.enum";
 import { BaseEntity } from "src/config/entity.base";
 import { FinantialPlan } from "./finantialPlan.entity";
+import { ContractDiscount } from "./contract-discount.entity";
 
 @Entity()
 export class Contract extends BaseEntity {
@@ -25,4 +26,6 @@ export class Contract extends BaseEntity {
   @ManyToOne(() => FinantialPlan)
   finantialPlan: FinantialPlan
 
-}
+  @OneToMany(() => ContractDiscount, contractDiscount => contractDiscount.contract)
+  contractDiscounts: ContractDiscount[]
+} 
