@@ -1,6 +1,7 @@
-import { BaseEntity, Column, Entity, JoinColumn, ManyToMany, ManyToOne } from "typeorm";
+import {  Column, Entity, JoinColumn, ManyToMany, ManyToOne } from "typeorm";
 import { Contract } from "./contract.entity";
 import { Discount } from "./discount.entity";
+import { BaseEntity } from "src/config/entity.base";
 
 @Entity()
 export class ContractDiscount extends BaseEntity {

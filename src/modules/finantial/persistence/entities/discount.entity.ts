@@ -1,5 +1,6 @@
-import { BaseEntity, Column, Entity, OneToMany } from "typeorm";
+import { Column, Entity, OneToMany } from "typeorm";
 import { ContractDiscount } from "./contract-discount.entity";
+import { BaseEntity } from "src/config/entity.base";
 
 @Entity()
 export class Discount extends BaseEntity {
