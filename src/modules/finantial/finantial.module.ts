@@ -9,9 +9,10 @@ import { DiscountsController } from './http/rest/controllers/discounts.controlle
 import { Contract } from './persistence/entities/contract.entity';
 import { ContractsController } from './http/rest/controllers/contracts.controller';
 import { ContractsService } from './core/services/contracts.service';
+import { Entry } from './persistence/entities/entry.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([FinantialPlan, Discount, Contract])],
+  imports: [TypeOrmModule.forFeature([FinantialPlan, Discount, Contract, Entry])],
   controllers: [FinantialPlanController, DiscountsController, ContractsController],
   providers: [FinantialPlansService, DiscountsService, ContractsService],
 })

@@ -3,6 +3,7 @@ import { ContractStatusEnum } from "./enums/contract-status.enum";
 import { BaseEntity } from "src/config/entity.base";
 import { FinantialPlan } from "./finantialPlan.entity";
 import { ContractDiscount } from "./contract-discount.entity";
+import { Entry } from "./entry.entity";
 
 @Entity()
 export class Contract extends BaseEntity {
@@ -28,4 +29,7 @@ export class Contract extends BaseEntity {
 
   @OneToMany(() => ContractDiscount, contractDiscount => contractDiscount.contract)
   contractDiscounts: ContractDiscount[]
+
+  @OneToMany(() => Entry, entry => entry.contract, { nullable: true })
+  entries?: Entry[]
 } 
