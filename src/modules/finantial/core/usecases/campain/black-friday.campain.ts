@@ -1,6 +1,6 @@
 import { Contract } from "src/modules/finantial/persistence/entities/contract.entity"
 import { SumDiscountsUseCase } from "../sum-discounts.usecase"
-import { TValuesInstallment } from "./campain-strategy"
+import { CampainStrategy, TValuesInstallment } from "./campain-strategy"
 
 export class BlackFridayCampain implements CampainStrategy {
   private readonly initalValue = 200
