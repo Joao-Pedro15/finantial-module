@@ -4,18 +4,28 @@ import { CreateContractDto } from "../dtos/create-contract.dto";
 import { EntriesService } from "src/modules/finantial/core/services/entries.service";
 import { CreateEntryDto } from "../dtos/create-entry.dto";
 import { ContractStatusEnum } from "src/modules/finantial/persistence/entities/enums/contract-status.enum";
-import { CreateContractDiscountDto } from "../dtos/create-contract-discount.dto";
 
 @Controller('contracts')
 export class ContractsController {
 
   constructor(
-    private readonly contractsService: ContractsService
+    private readonly contractsService: ContractsService,
+    private readonly entriesService: EntriesService
   ) {}
 
   @Post()
   async create(@Body() data: CreateContractDto) {
     return await this.contractsService.add(data)
+  }
+
+  @Post('/sign')
+  async signContract(@Body() data: CreateEntryDto) {
+
+    await this.contractsService.update(data.contractId, { 
+      signDate: new Date(),
+      status: ContractStatusEnum.SIGNED
+    })
+    return await this.entriesService.firstInstallment(data)
   }
 
   @Get()

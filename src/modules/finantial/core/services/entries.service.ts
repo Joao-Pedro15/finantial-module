@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Entry } from "../../persistence/entities/entry.entity";
 import { EntriesRepository } from "../../persistence/repositories/entries.repository";
@@ -19,9 +19,15 @@ export class EntriesService {
   ) {}
 
   async firstInstallment(data: CreateEntryDto) {
-    const contract = await this.contractsRepository.findOneByOrFail({ id: data.contractId })
-    const campain = new CampainContextUseCase(contract)
-    const generate = campain.setCampain(contract.finantialPlan.name as CampainNames)
+    const contract = await this.contractsRepository.find({
+      where: { id: data.contractId },
+      relations: {
+        financialPlan: true
+      }
+    })
+    if(!contract.length) throw new HttpException(`not found contract by id ${data.contractId}`, HttpStatus.BAD_REQUEST)
+    const campain = new CampainContextUseCase(contract[0])
+    const generate = campain.setCampain(contract[0].financialPlan.name as CampainNames)
     const values = generate.firstInstallment()
 
     const entry = this.entriesRepository.create({
@@ -29,10 +35,10 @@ export class EntriesService {
       value: values.value,
       discount: values.discount,
       contractId: data.contractId,
-      installment: data.installment,
+      installmentNumber: data.installment,
       status: EntryStatusEnum.PENDING,
       fine: null,
-      interest: null,
+      interest: null
     })
 
     const rest = generate.restInstallments()
@@ -41,7 +47,7 @@ export class EntriesService {
         value: v.value,
         discount: v.discount,
         contractId: data.contractId,
-        installment: i++,
+        installmentNumber: i += 2,
         status: EntryStatusEnum.PENDING,
         fine: null,
         interest: null,
