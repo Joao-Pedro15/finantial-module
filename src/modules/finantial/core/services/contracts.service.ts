@@ -3,8 +3,8 @@ import { ContractRepository } from "../../persistence/repositories/contract.repo
 import { InjectRepository } from "@nestjs/typeorm";
 import { Contract } from "../../persistence/entities/contract.entity";
 import { CreateContractDto } from "../../http/rest/dtos/create-contract.dto";
-import { FinantialPlanRepository } from "../../persistence/repositories/finantialPlan.repository";
-import { FinantialPlan } from "../../persistence/entities/finantialPlan.entity";
+import { FinancialPlanRepository } from "../../persistence/repositories/financialPlan.repository";
+import { FinancialPlan } from "../../persistence/entities/financialPlan.entity";
 
 @Injectable()
 export class ContractsService {
@@ -12,25 +12,38 @@ export class ContractsService {
   constructor(
     @InjectRepository(Contract)
     private readonly contractsRepository: ContractRepository,
-    @InjectRepository(FinantialPlan)
-    private readonly finantialPlanRepository: FinantialPlanRepository
+    @InjectRepository(FinancialPlan)
+    private readonly financialPlanRepository: FinancialPlanRepository
   ) {}
 
   async add(data: CreateContractDto) {
-    const finantialPlan = await this.finantialPlanRepository.findOneByOrFail({ id: data.finantialPlanId })
+    const finantialPlan = await this.financialPlanRepository.findOneByOrFail({ id: data.financialPlanId })
     
     const contract = this.contractsRepository.create({
       qtdInstallments: data.qtdInstallments,
       value: finantialPlan.contractValue,
-      finantialPlanId: data.finantialPlanId,
-      signDate: new Date()
+      financialPlanId: data.financialPlanId,
+      signDate: new Date(),
     })
 
     await this.contractsRepository.save(contract)
   }
 
   async find() {
-    return await this.contractsRepository.find()
+    return await this.contractsRepository.find({
+      relations: { financialPlan: true, contractDiscounts: true }
+    })
+  }
+
+  async update(id: number, data: Partial<Contract>) {
+    
+    await this.contractsRepository.findOneByOrFail({ id })
+    await this.contractsRepository.update(id, data)
+    return
+  } 
+
+  async delete(id: number) {
+    await this.contractsRepository.delete({ id })
   }
 
 }
