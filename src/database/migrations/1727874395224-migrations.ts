@@ -1,16 +1,16 @@
 import { MigrationInterface, QueryRunner, Table, TableForeignKey } from "typeorm";
 
-export class Migrations1727364708143 implements MigrationInterface {
+export class Migrations1727874395224 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
-    
+
         await queryRunner.createTable(new Table({
-            name: 'finantial_plans',
+            name: 'financialPlans',
             columns: [
-                { name: 'id', type: 'uuid', isPrimary:true, default: 'gen_random_uuid()' },
+                { name: 'id', type: 'int', isPrimary: true, isGenerated: true, generationStrategy: 'increment' },
                 { name: 'name', type: 'varchar' },
-                { name: 'due_date', type: 'date' },
-                { name: 'contract_value', type: 'float' },
+                { name: 'dueDateRule', type: 'varchar' },
+                { name: 'contractValue', type: 'float' },
                 { name: 'enabled', type: 'boolean', default: true },
                 { name: 'year', type: 'int', default: new Date().getFullYear() },
             ]   
@@ -19,28 +19,26 @@ export class Migrations1727364708143 implements MigrationInterface {
         await queryRunner.createTable(new Table({
             name: 'contracts',
             columns: [
-                { name: 'id', type: 'uuid', isPrimary:true, default: 'gen_random_uuid()' },
-                { name: 'sign_date', type: 'date' },
+                { name: 'id', type: 'int', isPrimary: true, isGenerated: true, generationStrategy: 'increment' },
+                { name: 'signDate', type: 'date' },
                 { name: 'value', type: 'float' },
-                { name: 'qtd_installments', type: 'int' },
-                { name: 'finantial_plan_id', type: 'varchar' },
+                { name: 'qtdInstallments', type: 'int' },
+                { name: 'financialPlanId', type: 'int' },
                 { 
                     name: 'status', 
                     type: 'enum',
-                    enum: ["CANCELLED", "OUT_FOR_SIGNATURE", "SIGNED" ] ,
-                    default: "CANCELLED"
+                    enum: ["CANCELLED", "OUT_FOR_SIGNATURE", "SIGNED" ]
                 }
             ]
         }))
 
         await queryRunner.createForeignKey('contracts', new TableForeignKey({
-            columnNames: ['finantial_plan_id'],
-            referencedColumnNames: ['finantial_plan_id'],
-            referencedTableName: 'finantial_plans',
+            columnNames: ['financialPlanId'],
+            referencedColumnNames: ['id'],
+            referencedTableName: 'financialPlans',
             onDelete: 'CASCADE'
         }))
 
-    
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {

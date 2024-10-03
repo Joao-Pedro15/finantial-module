@@ -13,8 +13,9 @@ export const datasourceOptions: DataSourceOptions = {
   username: 'joao',
   password: '123123',
   entities: [join(__dirname, '../modules/**/persistence/entities/*.entity.{js, ts}')],
-  migrations: [join(__dirname, './migrations/*.{js, ts}')],
-  synchronize: true
+  migrations: [__dirname + '/migrations/*.{js,ts}'],
+  synchronize: true,
+  logging: false
 }
 
 export default new DataSource(datasourceOptions)
