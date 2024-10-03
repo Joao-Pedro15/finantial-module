@@ -5,8 +5,8 @@ export class CreateFinantialPlanDto {
   @IsString()
   name: string
 
-  @IsDateString()
-  dueDate: string
+  @IsString()
+  dueDateRule: string
   
   @IsNumber()
   contractValue: number

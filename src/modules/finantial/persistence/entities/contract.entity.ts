@@ -1,31 +1,31 @@
-import { Column, Entity, ManyToOne, OneToMany } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 import { ContractStatusEnum } from "./enums/contract-status.enum";
 import { BaseEntity } from "src/config/entity.base";
-import { FinantialPlan } from "./finantialPlan.entity";
+import { FinancialPlan } from "./financialPlan.entity";
 import { ContractDiscount } from "./contract-discount.entity";
 import { Entry } from "./entry.entity";
 
-@Entity()
+@Entity({ name: "contracts" })
 export class Contract extends BaseEntity {
 
 
   @Column({ enum: ContractStatusEnum, default: ContractStatusEnum.OUT_FOR_SIGNATURE })
   status: string
 
-  @Column({ name: "sign_date" })
+  @Column()
   signDate: Date
 
-  @Column({ name: "value" })
+  @Column()
   value: number
 
-  @Column({ name: "qtd_installments" })
+  @Column()
   qtdInstallments: number
 
-  @Column({ name: 'finantial_plan_id' })
-  finantialPlanId: string
+  @Column()
+  financialPlanId: number
 
-  @ManyToOne(() => FinantialPlan)
-  finantialPlan: FinantialPlan
+  @ManyToOne(() => FinancialPlan, financialPlan => financialPlan.contracts)
+  financialPlan: FinancialPlan
 
   @OneToMany(() => ContractDiscount, contractDiscount => contractDiscount.contract)
   contractDiscounts: ContractDiscount[]

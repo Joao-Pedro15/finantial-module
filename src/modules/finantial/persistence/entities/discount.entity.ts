@@ -2,16 +2,16 @@ import { Column, Entity, OneToMany } from "typeorm";
 import { ContractDiscount } from "./contract-discount.entity";
 import { BaseEntity } from "src/config/entity.base";
 
-@Entity()
+@Entity({ name: "discounts" })
 export class Discount extends BaseEntity {
 
-    @Column({ name: 'discount_percentage', nullable: true })
+    @Column({ nullable: true })
     discountPercentage: number
 
-    @Column({ name: 'discount_value', nullable: true })
+    @Column({ nullable: true })
     value: number
 
-    @Column({ name: 'first_installment' })
+    @Column()
     firstInstallment: boolean
 
     @Column({ default: true })

@@ -3,21 +3,21 @@ import { Contract } from "./contract.entity";
 import { Discount } from "./discount.entity";
 import { BaseEntity } from "src/config/entity.base";
 
-@Entity()
+@Entity({ name: 'contractsDiscounts' })
 export class ContractDiscount extends BaseEntity {
 
-    @Column({ name: 'contract_id' })
-    contractId: string
+    @Column()
+    contractId: number
 
-    @Column({ name: 'discount_id' })
-    discountId: string
+    @Column()
+    discountId: number
     
     @ManyToOne(() => Contract, contract => contract.contractDiscounts)
-    @JoinColumn({ name: 'contract_id', referencedColumnName: 'id' })
+    @JoinColumn({ name: 'contractId', referencedColumnName: 'id' })
     contract: Contract
 
 
     @ManyToOne(() => Discount, discount => discount.contractDiscounts)
-    @JoinColumn({ name: 'discount_id', referencedColumnName: 'id' })
+    @JoinColumn({ name: 'discountId', referencedColumnName: 'id' })
     discount: Discount
 }

@@ -5,6 +5,6 @@ export class CreateEntryDto {
   @IsNumber()
   installment: number
 
-  @IsUUID()
-  contractId: string
+  @IsNumber()
+  contractId: number
 }

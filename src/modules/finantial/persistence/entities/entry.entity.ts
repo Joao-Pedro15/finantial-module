@@ -3,11 +3,11 @@ import { Column, Entity, ManyToOne } from "typeorm";
 import { EntryStatusEnum } from "./enums/entry-status.enum";
 import { Contract } from "./contract.entity";
 
-@Entity()
+@Entity({ name: "entries" })
 export class Entry extends BaseEntity {
 
-  @Column({ name: 'contract_id' })
-  contractId: string
+  @Column()
+  contractId: number
 
   @Column()
   value: number
@@ -26,7 +26,7 @@ export class Entry extends BaseEntity {
 
 
   @Column()
-  installment: number
+  installmentNumber: number
 
   @Column({ enum: EntryStatusEnum, default: EntryStatusEnum.PENDING })
   status: string
