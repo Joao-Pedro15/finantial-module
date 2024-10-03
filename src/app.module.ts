@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import variables from './config/variables';
 import { DbModule } from './database/database.module';
-import { FinantialModule } from './modules/finantial/finantial.module';
+import { FinancialModule } from './modules/finantial/financial.module';
 
 
 @Module({
@@ -11,7 +11,7 @@ import { FinantialModule } from './modules/finantial/finantial.module';
       load: [variables]
     }),
     DbModule,
-    FinantialModule
+    FinancialModule
   ],
   controllers: [],
   providers: [],
