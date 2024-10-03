@@ -14,11 +14,11 @@ export class CampainContextUseCase {
   setCampain(finantialPlan:CampainNames): CampainStrategy {
     const sumDiscounts = new SumDiscountsUseCase(this.contract.contractDiscounts)
     
-    if(finantialPlan == 'blackFriday') {
+    if(finantialPlan == 'Black Friday') {
       return new BlackFridayCampain(this.contract, sumDiscounts)
     }
 
-    if(finantialPlan == 'christmas') {
+    if(finantialPlan == 'Christmas') {
       return new ChristmasCampain(this.contract, sumDiscounts)
     }
 
@@ -26,4 +26,4 @@ export class CampainContextUseCase {
   }
 }
 
-export type CampainNames = 'blackFriday' | 'default' | 'christmas'
+export type CampainNames = 'Black Friday' | 'Default' | 'Christmas'
