@@ -3,12 +3,21 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { DiscountsRepository } from "../../persistence/repositories/discounts.repository";
 import { Discount } from "../../persistence/entities/discount.entity";
 import { CreateDiscountDto } from "../../http/rest/dtos/create-discount.dto";
+import { Contract } from "../../persistence/entities/contract.entity";
+import { ContractRepository } from "../../persistence/repositories/contract.repository";
+import { ContractDiscount } from "../../persistence/entities/contract-discount.entity";
+import { ContractsDiscountsRepository } from "../../persistence/repositories/contractsDiscounts.repository";
+import { CreateContractDiscountDto } from "../../http/rest/dtos/create-contract-discount.dto";
 
 @Injectable()
 export class DiscountsService {
   constructor(
     @InjectRepository(Discount)
-    private readonly discountsRepository: DiscountsRepository
+    private readonly discountsRepository: DiscountsRepository,
+    @InjectRepository(Contract)
+    private readonly contractsRepository: ContractRepository,
+    @InjectRepository(ContractDiscount)
+    private readonly contractsDiscountsRepository: ContractsDiscountsRepository
   ) {}
 
   async add(data: CreateDiscountDto) {
@@ -22,6 +31,20 @@ export class DiscountsService {
       firstInstallment: data.firstInstallment
     })
     await this.discountsRepository.save(discount)
+  }
+
+  async addInContract(data:CreateContractDiscountDto) {
+
+    await Promise.all([
+      this.discountsRepository.findOneByOrFail({ id: data.discountId }),
+      this.contractsRepository.findOneByOrFail({ id: data.contractId })
+    ])
+
+    await this.contractsDiscountsRepository.save({
+      contractId: data.contractId,
+      discountId: data.discountId,
+    })
+
   }
 
   async find() {

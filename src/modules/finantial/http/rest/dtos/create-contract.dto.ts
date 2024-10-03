@@ -4,6 +4,6 @@ export class CreateContractDto {
   @IsNumber()
   qtdInstallments: number
 
-  @IsUUID()
-  finantialPlanId: string
+  @IsNumber()
+  financialPlanId: number
 }
